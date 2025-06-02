@@ -18,12 +18,12 @@ app.set("view engine","ejs");
 
 
 // 4.Routing Codes==> ruterlarga muljallangan
-app.get("/hello", function (req, res) {
-    res.end(`<h1 style="background: red">Hello World by Valijon</h1>`);
+app.post("/create item", (req, res) => {
+    console.log(req);
+    res.json({ test: "success" });
 });
-
-app.get("/gift", function (req, res) {
-    res.end(`<h1 style="background: blue">Siz sovgalar bulimidasiz</h1>`);
+app.get("/", function (req, res) {
+    resizeBy.render("harid");
 });
 
 
