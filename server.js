@@ -2,6 +2,16 @@ console.log("Web Serverni boshlash");
 const express = require("express");
 const app = express();
 const http = require('http');
+const fs = require("fs");
+
+let user;
+fs.readFile("database/user.json", "utf8", (err, data) => {
+    if(err) {
+        console.log("EROR:", err);
+    } else {
+        user = JSON.parse(data)
+    }
+});
 
 
 // 1.Kirish kodlari==> Expressga kirib kelayotgan malumotlarga oid bulgan malumotlar yoziladi
@@ -25,6 +35,12 @@ app.post("/create item", (req, res) => {
 app.get("/", function (req, res) {
     resizeBy.render("harid");
 });
+
+app.get('/author', (req, res) => {
+    res.render("author", {user: user});
+});
+
+
 
 
 const server = http.createServer(app);
