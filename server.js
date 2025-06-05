@@ -40,8 +40,6 @@ app.get('/author', (req, res) => {
 });
 
 
-
-
 const server = http.createServer(app);
 // Portga biriktirish
 let PORT = 3000;
