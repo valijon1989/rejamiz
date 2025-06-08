@@ -285,3 +285,22 @@ function countLetter(raqam, parol) {
 }
 
 countLetter("2", "uz24676uz2358uz2456");
+
+
+
+
+
+  // B TASK
+
+
+  function countDigits(text){
+  console.log(typeof text);
+  const result = text.split("");
+  console.log(result);
+  
+  const lastResult = result.filter((ele) => {
+    return ele >= 0  && ele !== " ";
+  })
+  console.log(lastResult);
+}
+ countDigits("ad2 a54f0    y79  w") ;

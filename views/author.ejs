@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="/main.css" />
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+crossorigin="anonymous"
+referrerpolicy="no-referrer"
+/>
+<script
+src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+crossorigin="anonymous"
+></script>
+<title>Portfolio</title>
+</head>
+<body>
+<div class="frame">
+<div class="main_frame">
+<div class="left_frame">
+<div class="container">
+<div class="profile">
+<img class="avatar" src="/author/images/Profile.svg" alt="" />
+<div class="name"><%=user.name%></div>
+<div class="profession"><%=user.profession%></div>
+<div class="icons">
+<div class="icon">
+<a
+href="https://www.facebook.com/sarvarbek.saydaliyev.14"
+target="_blank"
+title="Facebook account"
+,
+>
+<i class="fa-brands fa-facebook-f"></i
+></a>
+</div>
+<div class="icon">
+<a href=""> <i class="fa-brands fa-instagram"></i></a>
+</div>
+<div class="icon">
+<a href=""> <i class="fa-brands fa-twitter"></i></a>
+</div>
+<div class="icon">
+<a href=""> <i class="fa-brands fa-linkedin-in"></i></a>
+</div>
+<div class="icon">
+<a href=""> <i class="fa-brands fa-youtube"></i></a>
+</div>
+<div class="icon">
+<a href=""> <i class="fa-brands fa-dribbble"></i></a>
+</div>
+</div>
+</div>
+<div class="margener"></div>
+<div class="personal_info">
+<div class="line">
+<div class="main_caetegory">Age:</div>
+<div class="info"><%=user.age%></div>
+</div>
+<div class="line">
+<div class="main_caetegory">Residence:</div>
+<div class="info"><%=user.residence%></div>
+</div>
+<div class="line">
+<div class="main_caetegory">Freelance:</div>
+<div class="info" style="color: rgb(126, 185, 66)">
+Available
+</div>
+</div>
+<div class="line">
+<div class="main_caetegory">Address:</div>
+<div class="info"><%=user.address%></div>
+</div>
+</div>
+<div class="margener"></div>
+<div class="languages">
+<strong>Languages</strong>
+<div class="langs">
+<div class="lan">
+<div><%=user.languages[0]%></div>
+<p>100%</p>
+</div>
+<div class="percent">
+<div class="percent_degree" style="width: 100%"></div>
+</div>
+</div>
+<div class="langs">
+<div class="lan">
+<div><%=user.languages[1]%></div>
+<p>80%</p>
+</div>
+<div class="percent">
+<div class="percent_degree" style="width: 80%"></div>
+</div>
+</div>
+<div class="langs">
+<div class="lan">
+<div><%=user.languages[2]%></div>
+<p>60%</p>
+</div>
+<div class="percent">
+<div class="percent_degree" style="width: 60%"></div>
+</div>
+</div>
+</div>
+<div class="margener"></div>
+<div class="languages">
+<strong>Skills</strong>
+<div class="langs">
+<div class="lan">
+<div><%=user.skills[0]%></div>
+<p>90%</p>
+</div>
+<div class="percent">
+<div class="percent_degree" style="width: 90%"></div>
+</div>
+</div>
+<div class="langs">
+<div class="lan">
+<div><%=user.skills[1]%></div>
+<p>85%</p>
+</div>
+<div class="percent">
+<div class="percent_degree" style="width: 85%"></div>
+</div>
+</div>
+<div class="langs">
+<div class="lan">
+<div><%=user.skills[2]%></div>
+<p>80%</p>
+</div>
+<div class="percent">
+<div class="percent_degree" style="width: 80%"></div>
+</div>
+</div>
+<div class="langs">
+<div class="lan">
+<div><%=user.skills[3]%></div>
+<p>75%</p>
+</div>
+<div class="percent">
+<div class="percent_degree" style="width: 75%"></div>
+</div>
+</div>
+<div class="langs">
+<div class="lan">
+<div><%=user.skills[4]%></div>
+<p>85%</p>
+</div>
+<div class="percent">
+<div class="percent_degree" style="width: 85%"></div>
+</div>
+</div>
+</div>
+<div class="margener"></div>
+
+<div class="extra_skills">
+<strong>Extra Skills</strong>
+<div class="skill">
+<img src="/author/icon/Icons.svg" alt="" />
+<p><%=user.extra_skills[0]%></p>
+</div>
+<div class="skill">
+<img src="/author/icon/Icons.svg" alt="" />
+<p><%=user.extra_skills[1]%></p>
+</div>
+<div class="skill">
+<img src="/author/icon/Icons.svg" alt="" />
+<p><%=user.extra_skills[2]%></p>
+</div>
+<div class="skill">
+<img src="/author/icon/Icons.svg" alt="" />
+<p><%=user.extra_skills[3]%></p>
+</div>
+<div class="skill">
+<img src="/author/icon/Icons.svg" alt="" />
+<p><%=user.extra_skills[4]%></p>
+</div>
+</div>
+<div class="margener"></div>
+<button class="cv_download">
+Download cv <img src="/author/icon/Vector (1).svg" alt="" />
+</button>
+</div>
+</div>
+
+<div class="midd_frame">
+<div class="container">
+<div class="midd_header">
+<div class="header_left">
+<strong>Software Engineer </strong>
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et,
+volutpat feugiat placerat lobortis. Natoque rutrum semper sed
+suspendisse nunc lectus.
+</p>
+<button class="hire_me">
+HIRE ME <img src="/author/icon/Frame.svg" alt="" />
+</button>
+</div>
+<div class="header_right">
+<img src="/author/images/Your Image 1.svg" alt="" />
+</div>
+<div class="small_patterns">
+<img
+src="/author/icon/orange Ellipse .svg"
+alt=""
+class="i_1"
+/><img
+src="/author/icon/green ellips.svg"
+alt=""
+class="i_2"
+/><img
+src="/author/icon/Rectangle blue.svg"
+alt=""
+class="i_3"
+/><img
+src="/author/icon/green ellips.svg"
+alt=""
+class="i_4"
+/><img
+src="/author/icon/orange Ellipse .svg"
+alt=""
+class="i_5"
+/><img
+src="/author/icon/Rectangle orange.svg"
+alt=""
+class="i_6"
+/><img src="/author/icon/red 3 angle.svg" alt="" class="i_7" />
+</div>
+</div>
+
+<div class="my_services">
+<strong>My Services</strong>
+<p>
+Amet minim mollit non deserunt ullamco est sit aliqua dolor do
+amet sint. Velit officia consequat duis enim velit mollit. lorem
+ipsum Velit
+</p>
+<div class="service_boxses">
+<div class="sevice_box">
+<img src="/author/box_images/web development.svg" alt="" />
+<span>web development</span>
+<p>blog, e-commerce</p>
+</div>
+<div class="sevice_box">
+<img src="/author/box_images/uiux design.png" alt="" />
+<span>uI/uX design</span>
+<p>Mobile app, website design</p>
+</div>
+<div class="sevice_box">
+<img src="/author/box_images/sound design.svg" alt="" />
+<span>sound design</span>
+<p>Voice Over, Beat Making</p>
+</div>
+<div class="sevice_box">
+<img src="/author/box_images/game design.svg" alt="" />
+<span>game design</span>
+<p>Character Design, Props & Objects</p>
+</div>
+<div class="sevice_box">
+<img src="/author/box_images/photography.svg" alt="" />
+<span>photography</span>
+<p>portrait, product photography</p>
+</div>
+<div class="sevice_box" style="justify-content: space-around">
+<span>advertising</span>
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Vitae nulla diam in ac dictum a urna viverra morbi.
+</p>
+<a href="">ORDER NOW ></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="right_frame">
+<div class="night_mode">
+<img src="/author/btn_icon/night.svg" alt="" />
+</div>
+<div class="menu_boxes">
+<div class="menu_box">
+<div class="direction">Home</div>
+<img src="/author/btn_icon/1.svg" alt="" />
+</div>
+<div class="menu_box">
+<div class="direction">Projects</div>
+<img src="/author/btn_icon/2.svg" alt="" />
+</div>
+<div class="menu_box">
+<div class="direction">Education</div>
+<img src="/author/btn_icon/3.svg" alt="" />
+</div>
+<div class="menu_box">
+<div class="direction">Experience</div>
+<img src="/author/btn_icon/4.svg" alt="" />
+</div>
+<div class="menu_box">
+<div class="direction">Tools</div>
+<img src="/author/btn_icon/5.svg" alt="" />
+</div>
+<div class="menu_box">
+<div class="direction">Contact</div>
+<img src="/author/btn_icon/6.svg" alt="" />
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+
+
