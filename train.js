@@ -290,7 +290,12 @@ countLetter("2", "uz24676uz2358uz2456");
 
 
 
-  // B TASK
+  
+
+
+ 
+
+// B TASK
 
 
   function countDigits(text){
@@ -304,7 +309,3 @@ countLetter("2", "uz24676uz2358uz2456");
   console.log(lastResult);
 }
  countDigits("ad2 a54f0    y79  w") ;
-
-
-
- 
