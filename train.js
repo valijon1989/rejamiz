@@ -296,6 +296,24 @@ countLetter("2", "uz24676uz2358uz2456");
  
 
 // B TASK
+ //1- varyant  
+
+//   function countDigits(text){
+//   console.log(typeof text);
+//   const result = text.split("");
+//   console.log(result);
+  
+//   const lastResult = result.filter((ele) => {
+//     return ele >= 0  && ele !== " ";
+//   })
+//   console.log(lastResult);
+// }
+//  countDigits("ad2a54f0y79w") ;
+
+
+
+
+// 2chi varyant
 
 
   function countDigits(text){
@@ -304,8 +322,10 @@ countLetter("2", "uz24676uz2358uz2456");
   console.log(result);
   
   const lastResult = result.filter((ele) => {
-    return ele >= 0  && ele !== " ";
+    return ele >= 7  && ele <= 7;
   })
   console.log(lastResult);
 }
- countDigits("ad2 a54f0    y79  w") ;
+ countDigits("ad2a54f0y79w") ;
+
+
