@@ -329,3 +329,87 @@ countLetter("2", "uz24676uz2358uz2456");
  countDigits("ad2a54f0y79w") ;
 
 
+// C TASK
+ 
+/*
+Berilish
+TASK-C
+
+Shop nomli class tuzing, va bu class 3 xill parametr qabul qilsin.
+Hamda classning quyidagdek 3'ta metodi bo'lsin:
+
+1) qoldiq
+2) sotish
+3) qabul
+
+Har bir metod ishga tushgan vaqtda log qilinsin
+
+MASALAN:
+const shop = new Shop(4, 5, 2)
+
+shop.qoldiq();
+natija qaytishi kerak: Hozir 20: 40'da 4'ta non, 5'ta lag'mon va 2'ta cola mavjud
+
+shop.sotish("non", 3); & shop.qabul("cola", 4); & shop.qoldiq();
+Natija qaytishi kerak: Hozir 20:50da 1ta non, 5ta lag'mon va 6ta cola mavjud!
+*/
+
+class Shop {
+  constructor(shopNon, shopLagmon, shopCola) {
+    this.non = shopNon;
+    this.lagmon = shopLagmon;
+    this.cola = shopCola;
+  }
+//Shop nomli class tuzing, va bu class 3 xill parametr qabul qildi
+
+
+  introduce() {
+    console.log(`Sotuvdan oldin: Hozir 20:40 - ${this.non} ta non, ${this.lagmon} ta lagmon, ${this.cola} ta cola mavjud`);
+  } // malumot bermoqda
+sotish(nomi, soni) {
+    if (this[nomi] === undefined) {
+      console.log(`Error: "${nomi}" nomli mahsulot mavjud emas.`);
+    } else if (this[nomi] < soni) {
+      console.log(`Error: Yetarli ${nomi} mavjud emas. Hozirda: ${this[nomi]} ta.`);
+    } else {
+      this[nomi] -= soni;
+      console.log(`${soni} ta ${nomi} sotildi.`);
+    }
+  }
+
+  qabul(nomi, soni) {
+    if (this[nomi] === undefined) {
+      console.log(`Error: "${nomi}" nomli mahsulot mavjud emas.`);
+    } else {
+      this[nomi] += soni;
+      console.log(`${soni} ta ${nomi} qabul qilindi.`);
+    }
+  }
+  introduce() {
+    console.log(`Qoldiq: Hozir 20:50 - ${this.non} ta non, ${this.lagmon} ta lagmon, ${this.cola} ta cola mavjud`);
+  }
+}
+
+//call qismi
+const myShop = new Shop(4, 5, 2);
+
+// Vaqt: 20:40 dagi holat
+myShop.introduce("20:40");
+
+// sotuv
+myShop.sotish("non", 3);
+
+
+// qabul
+myShop.qabul("cola", 7);
+myShop.qabul("suv", 4);
+myShop.qabul("lagmon", 10);
+
+
+// 20:50 dagi xolat
+myShop.introduce("20:50");
+
+
+
+
+
