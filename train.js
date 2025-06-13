@@ -363,7 +363,7 @@ class Shop {
 //Shop nomli class tuzing, va bu class 3 xill parametr qabul qildi
 
 
-  introduce() {
+  introduce1() {
     console.log(`Sotuvdan oldin: Hozir 20:40 - ${this.non} ta non, ${this.lagmon} ta lagmon, ${this.cola} ta cola mavjud`);
   } // malumot bermoqda
 sotish(nomi, soni) {
@@ -394,7 +394,7 @@ sotish(nomi, soni) {
 const myShop = new Shop(4, 5, 2);
 
 // Vaqt: 20:40 dagi holat
-myShop.introduce("20:40");
+myShop.introduce1("20:40");
 
 // sotuv
 myShop.sotish("non", 3);
