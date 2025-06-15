@@ -54,8 +54,46 @@ db.collection("plans").deleteOne({_id: new mongodb.ObjectId(id)}, function (err,
   res.json({state: "success"});
     }  
    );
- 
 });
+
+
+// POST so‘rovi /edit-item endpointga yuborilganda ishga tushadi
+app.post("/edit-item", (req, res) => {
+
+  // Foydalanuvchidan kelgan ma’lumotni olamiz
+  const data = req.body; // { id: "...", new_input: "..." }
+  console.log(data); // Konsolga tekshirish uchun chiqaramiz
+
+  // MongoDB'dagi 'plans' kolleksiyasida tegishli elementni yangilaymiz
+  db.collection("plans").findOneAndUpdate( // ← ⚠️ Bu yerda oldin nuqta yo‘q edi – xato shu yerda edi
+    { _id: new mongodb.ObjectId(data.id) }, // id stringini MongoDB ObjectId formatiga aylantiramiz
+    { $set: { reja: data.new_input } }, // reja maydoniga yangi matnni yozamiz
+    function (err, result) { // MongoDB funksiyasi bajarilgandan keyin ishlaydi
+      if (err) { // Agar xato bo‘lsa
+        console.log("MongoDB yangilashda xato:", err); // Xatoni konsolga chiqaramiz
+        return res.json({ state: "error" }); // Frontendga xato haqida javob yuboramiz
+      }
+
+      // Muvaffaqiyatli yangilanganda:
+      res.json({ state: "success" }); // Frontendga 'success' javobi yuboriladi
+    }
+  );
+
+});
+
+
+
+
+
+
+app.post("/delete-all", (req, res) => {
+  if (req.body.delete_all) {
+    db.collection("plans").deleteMany(function () {
+      res.json({ state:"Hamma rejalar o'chirildi" });
+    });
+  }
+});
+
 
 app.get("/", function (req, res) {
   console.log("User entered /");

@@ -1,5 +1,7 @@
 // const { response } = require("../app");
 
+const { response } = require("../app");
+
 console.log("FrontEnd JS ishga tushdi");
 
 function itemTemplate(item) {
@@ -60,6 +62,30 @@ console.log(e.target);
 
 // edit operatsiyalari
     if (e.target.classList.contains("edit-me")) {
-      alert("Siz uzgartirish tugmasini bostingiz");
+      let userInput = prompt("Ozgartirish kiriting", e.target.parentElement.parentElement.querySelector(".item-text").innerHTML); // userning inputiga tengladik, promp xususiyatida qushimcha qiymat xam qusholamiz
+      if(userInput) { // agar uzgartirish kiritsak uning qiymatini log qilsin
+        axios
+        .post("/edit-item", {  // backent epi ga post qilamiz
+          id: e.target.getAttribute("data-id"),
+          new_input: userInput,
+        })
+        .then((response) =>  { // fronendda response ni kuramiz
+            console.log(response.data);
+            e.target.parentElement.parentElement.querySelector(".item-text")
+            .innerHTML = userInput;
+        })
+        .catch((err) => {
+           console.log("Iltimos qaytadan harakat qiling!");
+        });   
+      }
     }
-})
+});
+
+
+
+document.getElementById("clean-all").addEventListener("click",function () {
+  axios.post("/delete-all", { delete_all: true }).then((response) => {
+    alert(response.data.state);
+    document.location.reload();
+  });
+});
