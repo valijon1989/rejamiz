@@ -1,6 +1,4 @@
-// const { response } = require("../app");
 
-const { response } = require("../app");
 
 console.log("FrontEnd JS ishga tushdi");
 
@@ -49,8 +47,8 @@ console.log(e.target);
    if(confirm("Aniq o'chirmoqchimisiz?")) {
     axios
     .post("/delete-item", { id: e.target.getAttribute("data-id") })
-    .then((respose) => {
-      console.log(respose.data);
+    .then((response) => {
+      console.log(response.data);
       e.target.parentElement.parentElement.remove();
     })
     .catch((err) => {
