@@ -1,117 +1,116 @@
+// Server ishga tushgani haqida konsolga yozuv
 console.log("Web Serverni boshlash");
+
+// Express kutubxonasini chaqiramiz
 const express = require("express");
+
+// Expressning "response" modulini chaqiramiz (lekin bu holatda foydalanilmayapti)
 const res = require("express/lib/response");
+
+// Express serveri yaratilyapti
 const app = express();
 
-// MongoDB ni chaqirish
-const db = require("./server").db();
-const mongodb = require("mongodb");
+// MongoDB bilan ishlash uchun kutubxonalarni chaqiramiz
+const db = require("./server").db(); // server.js ichidan db funksiyasini chaqiramiz
+const mongodb = require("mongodb");  // ObjectId uchun kerak bo‘ladi
 
-
+// Foydalanuvchi haqidagi json faylni o‘qish uchun fs modulidan foydalanamiz
 const fs = require("fs");
-
 let user;
+
+// "user.json" faylini o‘qiymiz va JS obyektga aylantiramiz
 fs.readFile("database/user.json", "utf8", (err, data) => {
   if (err) {
-    console.log("ERROR:", err);
+    console.log("ERROR:", err); // xatolik bo‘lsa chiqaramiz
   } else {
-    user = JSON.parse(data);
+    user = JSON.parse(data); // muvaffaqiyatli o‘qilsa, user o‘zgaruvchisiga joylaymiz
   }
 });
 
+// 1. Kirish kodlari
+// public papkasidagi fayllarga ochiq ruxsat beriladi (CSS, JS, rasm va h.k.)
+app.use(express.static("public"));
 
+// JSON formatidagi POST datani qabul qilish uchun middleware
+app.use(express.json());
 
+// HTML formadan keladigan datani objectga aylantirib beradi
+app.use(express.urlencoded({ extended: true }));
 
+// 2. (Bo‘sh) Session uchun joy ajratilgan lekin ishlatilmagan
 
+// 3. Views sozlamalari (EJS shablonlar bilan ishlash uchun)
+app.set("views", "views");          // EJS fayllar qayerda joylashganini ko‘rsatamiz
+app.set("view engine", "ejs");      // EJS templating engine sifatida belgilanadi
 
+// 4. Routing - marshrutlar
 
-// 1.Kirish kodlari==> Expressga kirib kelayotgan malumotlarga oid bulgan malumotlar yoziladi
-app.use(express.static("public"));  // har qanday brauzerdan kelayotgan malumotlar uchun public folderi ochiq manosini anglatadi
-app.use(express.json());  // krib kelayotgan jeson xolatdagi datani object xolatiga ugirib beradi
-app.use(express.urlencoded({ extended: true})); // HTML dan bron narsani form qilsak express servir qabul qilib oladi. buni yozmasak HTML dan form qilgan naralarni form qilib bulmaydi.
-
-
-// 2.Session code
-
-// 3. Views code==> traditional usulda beckandda frontend yasemiz==> yani backendda HTML yasab uni klaintga yuboramiz
-app.set("views","views");  // folder kursatilyapti
-app.set("view engine","ejs");
-
-
-// 4.Routing Codes==> ruterlarga muljallangan
+// Reja qo‘shish marshruti (frontenddan POST so‘rovi kelganda)
 app.post("/create-item", (req, res) => {
   console.log("User entered /create-item");
   
-   const new_reja = req.body.reja;
-   db.collection("plans").insertOne({ reja: new_reja }, (err, data) => {
-    res.json(data.ops[0]);
-   });
+  const new_reja = req.body.reja; // foydalanuvchidan kelgan reja
+  db.collection("plans").insertOne({ reja: new_reja }, (err, data) => {
+    // Reja MongoDB'ga yoziladi va javob sifatida clientga qaytariladi
+    res.json(data.ops[0]); // .ops eski versiyada ishlatilgan - MongoDB versiyasiga bog‘liq
+  });
 });
 
+// Rejani o‘chirish marshruti
 app.post("/delete-item", (req, res) => {
-  const id = req.body.id;
-db.collection("plans").deleteOne({_id: new mongodb.ObjectId(id)}, function (err, data) {
-  res.json({state: "success"});
-    }  
-   );
+  const id = req.body.id; // ID ni olish
+  db.collection("plans").deleteOne({ _id: new mongodb.ObjectId(id) }, function (err, data) {
+    res.json({ state: "success" }); // o‘chirildi deb javob beriladi
+  });
 });
 
-
-// POST so‘rovi /edit-item endpointga yuborilganda ishga tushadi
+// Rejani o‘zgartirish marshruti
 app.post("/edit-item", (req, res) => {
-
-  // Foydalanuvchidan kelgan ma’lumotni olamiz
   const data = req.body; // { id: "...", new_input: "..." }
-  console.log(data); // Konsolga tekshirish uchun chiqaramiz
+  console.log(data); // Konsolda tekshirib ko‘ramiz
 
-  // MongoDB'dagi 'plans' kolleksiyasida tegishli elementni yangilaymiz
-  db.collection("plans").findOneAndUpdate( // ← ⚠️ Bu yerda oldin nuqta yo‘q edi – xato shu yerda edi
-    { _id: new mongodb.ObjectId(data.id) }, // id stringini MongoDB ObjectId formatiga aylantiramiz
-    { $set: { reja: data.new_input } }, // reja maydoniga yangi matnni yozamiz
-    function (err, result) { // MongoDB funksiyasi bajarilgandan keyin ishlaydi
-      if (err) { // Agar xato bo‘lsa
-        console.log("MongoDB yangilashda xato:", err); // Xatoni konsolga chiqaramiz
-        return res.json({ state: "error" }); // Frontendga xato haqida javob yuboramiz
+  db.collection("plans").findOneAndUpdate(
+    { _id: new mongodb.ObjectId(data.id) }, // ID orqali topamiz
+    { $set: { reja: data.new_input } },     // yangi reja matnini yozamiz
+    function (err, result) {
+      if (err) {
+        console.log("MongoDB yangilashda xato:", err);
+        return res.json({ state: "error" });
       }
-
-      // Muvaffaqiyatli yangilanganda:
-      res.json({ state: "success" }); // Frontendga 'success' javobi yuboriladi
+      res.json({ state: "success" });
     }
   );
-
 });
 
-
-
-
-
-
+// Hamma rejalarni o‘chirish marshruti
 app.post("/delete-all", (req, res) => {
   if (req.body.delete_all) {
     db.collection("plans").deleteMany(function () {
-      res.json({ state:"Hamma rejalar o'chirildi" });
+      res.json({ state: "Hamma rejalar o'chirildi" });
     });
   }
 });
 
-
+// Asosiy sahifa: foydalanuvchiga barcha rejalarni ko‘rsatish
 app.get("/", function (req, res) {
   console.log("User entered /");
+
   db.collection("plans")
-  .find()
-  .toArray((err, data) =>{
-    if (err) {
-    console.log(err);
-    res.end("something went wrong");
-  } else {
-    res.render("reja", {items: data});
-     } 
-   });
+    .find()
+    .toArray((err, data) => {
+      if (err) {
+        console.log(err);
+        res.end("something went wrong");
+      } else {
+        res.render("reja", { items: data }); // EJS shablon orqali sahifa render qilinadi
+      }
+    });
 });
 
+// Author sahifasini render qilish
 app.get('/author', (req, res) => {
-    res.render("author", {user: user});
+  res.render("author", { user: user }); // author.ejs fayliga user ma’lumotlari uzatiladi
 });
 
-
+// Ushbu fayl modul sifatida eksport qilinmoqda
 module.exports = app;
