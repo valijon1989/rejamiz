@@ -18,7 +18,7 @@ mongodb.connect(connectionString,
         const app = require("./app");
         const server = http.createServer(app);
 // Portga biriktirish
-        let PORT = 3000;
+        let PORT = 4005 ;
 // tugri ishlasa pastdagi function ishga tushadi
         server.listen(PORT, function () {
         console.log(`The servis is running on port: ${PORT}, http://localhost:${PORT}`
