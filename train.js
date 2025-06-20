@@ -425,13 +425,13 @@ ya'ni bir xil harflar qatnashganligi uchun true qiymat qaytaradi.
 */
 
 
-function checkContent(eshmat,  toshmat) {
-const a = eshmat.split("").sort().join("");
-const b = toshmat.split("").sort().join("");
-return a === b;
-};
+// function checkContent(eshmat,  toshmat) {
+// const a = eshmat.split("").sort().join("");
+// const b = toshmat.split("").sort().join("");
+// return a === b;
+// };
 
-console.log(checkContent("mitgroup", "gmtiprou"));
+// console.log(checkContent("mitgroup", "gmtiprou"));
 
 
 
@@ -451,3 +451,28 @@ function getReverse(string) {
 }
 
 console.log(getReverse("salom")); 
+
+/* 
+TASK F
+
+Yagona string argumentga ega findDoublers nomli function tuzing
+Agar stringda bittadan ortiq bir xil harflar ishtirok etgan bo'lsa
+true yokida false natija qaytarsin.
+
+MASALAN: findDoublers("hello"); natija true qaytadi. Sababi ikki marotaba takrorlangan 'll' harfi mavjud!
+*/
+
+function findDoublers(ikkilik) { //function yasaymiz
+  const natija = []; // natija ni bush arrayga tenglab olamiz
+  ikkilik.split("").forEach((harf, i) => { 
+    if (ikkilik.indexOf(harf) !== i && !natija.includes(harf)) {
+      natija.push(harf);
+    }
+  });
+  return natija;
+};
+
+console.log(findDoublers("assalom dunyo"));
+
+
+
