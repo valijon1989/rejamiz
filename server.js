@@ -1,30 +1,21 @@
-const http = require('http');
+const http = require("http");
 
-const mongodb = require("mongodb");
+const { connect, getDbName } = require("./db");
 
-let db;
-const connectionString = "mongodb+srv://volfvolf0505:3323626v_@cluster0.pztgqtr.mongodb.net/"
+connect()
+  .then(() => {
+    console.log(`MongoDB connection succeed: ${getDbName()}`);
 
-mongodb.connect(connectionString,
-     {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}, (err, client) => {
-    if(err) console.log("ERROR on connection MongoDB");
-    else {
-        console.log("MongoDB connection succeed");
-       module.exports = client;
+    const app = require("./app");
+    const server = http.createServer(app);
+    const PORT = Number(process.env.PORT) || 4005;
 
-        const app = require("./app");
-        const server = http.createServer(app);
-// Portga biriktirish
-        let PORT = 4005 ;
-// tugri ishlasa pastdagi function ishga tushadi
-        server.listen(PORT, function () {
-        console.log(`The servis is running on port: ${PORT}, http://localhost:${PORT}`
-      );
-     }); 
-    }
-  }
-);
+    server.listen(PORT, function () {
+      console.log(`The servis is running on port: ${PORT}, http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log("ERROR on connection MongoDB", err);
+    process.exit(1);
+  });
 

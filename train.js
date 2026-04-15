@@ -425,13 +425,13 @@ ya'ni bir xil harflar qatnashganligi uchun true qiymat qaytaradi.
 */
 
 
-// function checkContent(eshmat,  toshmat) {
-// const a = eshmat.split("").sort().join("");
-// const b = toshmat.split("").sort().join("");
-// return a === b;
-// };
+function checkContent(eshmat,  toshmat) {
+const a = eshmat.split("").sort().join("");
+const b = toshmat.split("").sort().join("");
+return a === b;
+};
 
-// console.log(checkContent("mitgroup", "gmtiprou"));
+console.log(checkContent("mitgroup", "gmtiprou"));
 
 
 

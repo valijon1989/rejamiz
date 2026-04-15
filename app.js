@@ -4,15 +4,12 @@ console.log("Web Serverni boshlash");
 // Express kutubxonasini chaqiramiz
 const express = require("express");
 
-// Expressning "response" modulini chaqiramiz (lekin bu holatda foydalanilmayapti)
-const res = require("express/lib/response");
-
 // Express serveri yaratilyapti
 const app = express();
 
 // MongoDB bilan ishlash uchun kutubxonalarni chaqiramiz
-const db = require("./server").db(); // server.js ichidan db funksiyasini chaqiramiz
-const mongodb = require("mongodb");  // ObjectId uchun kerak bo‘ladi
+const db = require("./db").getDb(); // db.js ichidan db funksiyasini chaqiramiz
+const { ObjectId } = require("mongodb"); // ObjectId uchun kerak bo‘ladi
 
 // Foydalanuvchi haqidagi json faylni o‘qish uchun fs modulidan foydalanamiz
 const fs = require("fs");
@@ -44,67 +41,85 @@ app.set("views", "views");          // EJS fayllar qayerda joylashganini ko‘rs
 app.set("view engine", "ejs");      // EJS templating engine sifatida belgilanadi
 
 // 4. Routing - marshrutlar
+function createObjectId(id) {
+  if (!ObjectId.isValid(id)) {
+    throw new Error("Invalid item id");
+  }
+
+  return new ObjectId(id);
+}
 
 // Reja qo‘shish marshruti (frontenddan POST so‘rovi kelganda)
-app.post("/create-item", (req, res) => {
+app.post("/create-item", async (req, res) => {
   console.log("User entered /create-item");
-  
-  const new_reja = req.body.reja; // foydalanuvchidan kelgan reja
-  db.collection("plans").insertOne({ reja: new_reja }, (err, data) => {
-    // Reja MongoDB'ga yoziladi va javob sifatida clientga qaytariladi
-    res.json(data.ops[0]); // .ops eski versiyada ishlatilgan - MongoDB versiyasiga bog‘liq
-  });
+
+  try {
+    const new_reja = req.body.reja; // foydalanuvchidan kelgan reja
+    const result = await db.collection("plans").insertOne({ reja: new_reja });
+
+    return res.json({ _id: result.insertedId, reja: new_reja });
+  } catch (err) {
+    console.log("MongoDB yozishda xato:", err);
+    return res.status(500).json({ state: "error" });
+  }
 });
 
 // Rejani o‘chirish marshruti
-app.post("/delete-item", (req, res) => {
-  const id = req.body.id; // ID ni olish
-  db.collection("plans").deleteOne({ _id: new mongodb.ObjectId(id) }, function (err, data) {
-    res.json({ state: "success" }); // o‘chirildi deb javob beriladi
-  });
+app.post("/delete-item", async (req, res) => {
+  try {
+    const id = req.body.id; // ID ni olish
+    await db.collection("plans").deleteOne({ _id: createObjectId(id) });
+    return res.json({ state: "success" }); // o‘chirildi deb javob beriladi
+  } catch (err) {
+    console.log("MongoDB o'chirishda xato:", err);
+    return res.status(500).json({ state: "error" });
+  }
 });
 
 // Rejani o‘zgartirish marshruti
-app.post("/edit-item", (req, res) => {
-  const data = req.body; // { id: "...", new_input: "..." }
-  console.log(data); // Konsolda tekshirib ko‘ramiz
+app.post("/edit-item", async (req, res) => {
+  try {
+    const data = req.body; // { id: "...", new_input: "..." }
+    console.log(data); // Konsolda tekshirib ko‘ramiz
 
-  db.collection("plans").findOneAndUpdate(
-    { _id: new mongodb.ObjectId(data.id) }, // ID orqali topamiz
-    { $set: { reja: data.new_input } },     // yangi reja matnini yozamiz
-    function (err, result) {
-      if (err) {
-        console.log("MongoDB yangilashda xato:", err);
-        return res.json({ state: "error" });
-      }
-      res.json({ state: "success" });
-    }
-  );
+    await db.collection("plans").findOneAndUpdate(
+      { _id: createObjectId(data.id) }, // ID orqali topamiz
+      { $set: { reja: data.new_input } } // yangi reja matnini yozamiz
+    );
+
+    return res.json({ state: "success" });
+  } catch (err) {
+    console.log("MongoDB yangilashda xato:", err);
+    return res.status(500).json({ state: "error" });
+  }
 });
 
 // Hamma rejalarni o‘chirish marshruti
-app.post("/delete-all", (req, res) => {
-  if (req.body.delete_all) {
-    db.collection("plans").deleteMany(function () {
-      res.json({ state: "Hamma rejalar o'chirildi" });
-    });
+app.post("/delete-all", async (req, res) => {
+  if (!req.body.delete_all) {
+    return res.status(400).json({ state: "error" });
+  }
+
+  try {
+    await db.collection("plans").deleteMany({});
+    return res.json({ state: "Hamma rejalar o'chirildi" });
+  } catch (err) {
+    console.log("MongoDB barcha rejalarni o'chirishda xato:", err);
+    return res.status(500).json({ state: "error" });
   }
 });
 
 // Asosiy sahifa: foydalanuvchiga barcha rejalarni ko‘rsatish
-app.get("/", function (req, res) {
+app.get("/", async function (req, res) {
   console.log("User entered /");
 
-  db.collection("plans")
-    .find()
-    .toArray((err, data) => {
-      if (err) {
-        console.log(err);
-        res.end("something went wrong");
-      } else {
-        res.render("reja", { items: data }); // EJS shablon orqali sahifa render qilinadi
-      }
-    });
+  try {
+    const data = await db.collection("plans").find().toArray();
+    return res.render("reja", { items: data }); // EJS shablon orqali sahifa render qilinadi
+  } catch (err) {
+    console.log(err);
+    return res.end("something went wrong");
+  }
 });
 
 // Author sahifasini render qilish
