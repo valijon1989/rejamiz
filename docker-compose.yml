@@ -1,0 +1,22 @@
+services:
+  node:
+    container_name: reja
+    restart: always
+    image: valijon89/reja-image
+
+    ports:
+      - "4005:4005"
+
+    working_dir: /usr/src/app
+
+    env_file:
+      - .env
+
+    networks:
+      - reja_network
+
+    command: ["node", "server.js"]
+
+networks:
+  reja_network:
+    driver: bridge
